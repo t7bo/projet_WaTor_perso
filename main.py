@@ -28,27 +28,86 @@ class Poisson(Animaux):
     def __str__(self):
         return self.fish
     
+
          
     def deplacements(self):
         
         global grille
-        
+
+        #for poisson in liste_de_poissons:
         for poisson in liste_de_poissons:
-        
-            # Liste des indices adjacents valides pour le poisson
-            indices_adjacents = [(poisson.x-1, poisson.y), (poisson.x+1, poisson.y),
+
+            indices_adjacents = [(poisson.x-1, poisson.y), (poisson.x+1, poisson.y), (poisson.x, poisson.y-1), (poisson.x, poisson.y+1)]
+            nouvel_x, nouvel_y = random.choice(indices_adjacents)
+
+
+        #nouvel_x, nouvel_y = self.x, self.y
+
+
+            if nouvel_x > 0 and nouvel_x < nb_colonnes:
+
+                indices_adjacents = [(poisson.x-1, poisson.y), (poisson.x+1, poisson.y),
                                 (poisson.x, poisson.y-1), (poisson.x, poisson.y+1)]
             
+                nouvel_x, nouvel_y = random.choice(indices_adjacents)
+
+            if nouvel_x < 0:
+                nouvel_x = nb_colonnes-1
+            
+            if nouvel_x > nb_colonnes-1:
+                nouvel_x = 0
+
+            if nouvel_y < 0:
+                nouvel_y = nb_lignes 
+
+            if nouvel_y > nb_lignes:
+                nouvel_y = 0
+
+
+
+            # #if poisson.x != poisson[-1] and poisson.y != poisson[-1]:
+            # if poisson.x % nb_colonnes == 0 and poisson.y % nb_colonnes == 0:
+
+            #     indices_adjacents = [(poisson.x-1, poisson.y), (poisson.x+1, poisson.y),
+            #                         (poisson.x, poisson.y-1), (poisson.x, poisson.y+1)]
+                
+            #     nouvel_x, nouvel_y = random.choice(indices_adjacents)
+
+
+            # elif poisson.x % nb_colonnes != 0 and poisson.y % nb_colonnes == 0:
+
+            #     indices_y = [poisson.y, poisson.y-1, poisson.y+1]
+
+            #     modulo_x = poisson.x%nb_colonnes
+            #     nouvel_x = modulo_x
+            #     nouvel_y = random.choice(indices_y)
+
+
+            # elif poisson.x % nb_colonnes == 0 and poisson.y % nb_colonnes != 0:
+
+            #     indices_x = [poisson.x, poisson.x-1, poisson.x+1]
+
+            #     modulo_y = poisson.y%nb_colonnes
+            #     nouvel_x = random.choice(indices_x)
+            #     nouvel_y = modulo_y
+
+        
+            # Liste des indices adjacents valides pour le poisson
+            #indices_adjacents = [(poisson.x-1, poisson.y), (poisson.x+1, poisson.y),
+                               # (poisson.x, poisson.y-1), (poisson.x, poisson.y+1)]
+            
             # Sélectionnez un indice aléatoire parmi les indices adjacents
-            nouvel_x, nouvel_y = random.choice(indices_adjacents)
+            #nouvel_x, nouvel_y = random.choice(indices_adjacents)
         
             # Si le nouvel emplacement est valide dans la grille
-            if 0 <= nouvel_x < nb_lignes and 0 <= nouvel_y < nb_colonnes and grille[nouvel_x][nouvel_y] == "💧":
-                # Déplacez le poisson
-                grille[poisson.x][poisson.y] = "💧"  # Remplacez l'emplacement actuel du poisson par de l'eau
-                poisson.x, poisson.y = nouvel_x, nouvel_y  # Mettez à jour les indices du poisson
-                grille[poisson.x][poisson.y] = "🐠"  # Mettez à jour la grille avec le nouveau emplacement du poisson
-                    
+
+        #if 0 <= nouvel_x < nb_lignes and 0 <= nouvel_y < nb_colonnes and grille[nouvel_x][nouvel_y] == "💧":
+        if grille[nouvel_x][nouvel_y] == "💧":
+            # Déplacez le poisson
+            grille[poisson.x][poisson.y] = "💧"  # Remplacez l'emplacement actuel du poisson par de l'eau
+            poisson.x, poisson.y = nouvel_x, nouvel_y  # Mettez à jour les indices du poisson
+            grille[poisson.x][poisson.y] = "🐠"  # Mettez à jour la grille avec le nouveau emplacement du poisson
+                        
 
 #Demandez à l'utilisateur combien de poissons il souhaite créer
 nombre_de_poissons = int(input("Combien de poissons voulez-vous créer ? "))
@@ -73,30 +132,67 @@ class Requin(Poisson):
         return self.shark
     
 
+
     def deplacements_requins(self):
-        
+
         global grille
+
         
         for requin in liste_de_requins:
-        
-            # Liste des indices adjacents valides pour le requin
-            indices_adjacents_requins = [(requin.x-1, requin.y), (requin.x+1, requin.y),
-                                (requin.x, requin.y-1), (requin.x, requin.y+1)]
-            
-            # Sélectionnez un indice aléatoire parmi les indices adjacents
+
+            indices_adjacents_requins = [(requin.x-1, requin.y), (requin.x+1, requin.y), (requin.x, requin.y-1), (requin.x, requin.y+1)]
             nouvel_x_r, nouvel_y_r = random.choice(indices_adjacents_requins)
+
+            if nouvel_x_r < 0:
+                nouvel_x_r = nb_colonnes
             
-            # Si le nouvel emplacement est valide dans la grille
-            if 0 <= nouvel_x_r < nb_lignes and 0 <= nouvel_y_r < nb_colonnes and grille[nouvel_x_r][nouvel_y_r] == "💧":
+            if nouvel_x_r > nb_colonnes:
+                nouvel_x_r = 0
+
+            if nouvel_y_r < 0:
+                nouvel_y_r = nb_lignes 
+
+            if nouvel_y_r > nb_lignes:
+                nouvel_y_r = 0
+        
+            # if requin.x % nb_colonnes and requin.y % nb_colonnes == 0:
+            #     indices_adjacents_requins = [(requin.x-1, requin.y), (requin.x+1, requin.y),
+            #                     (requin.x, requin.y-1), (requin.x, requin.y+1)]
+            #     nouvel_x_r, nouvel_y_r = random.choice(indices_adjacents_requins)
+
+            # elif requin.x % nb_colonnes != 0 and requin.y % nb_colonnes == 0:
+
+            #     indices_y_r = [requin.y, requin.y-1, requin.y+1]
+
+            #     modulo_x_r = requin.x % nb_colonnes
+            #     nouvel_x_r = modulo_x_r
+            #     nouvel_y_r = random.choice(indices_y_r)
+
+            # elif requin.y % nb_colonnes == 0 and requin.y % nb_colonnes != 0:
+
+            #     indices_x_r = [requin.x, requin.x-1, requin.x+1]
+            #     modulo_y_r = requin.y%nb_colonnes
+            #     nouvel_x_r = random.choice(indices_x_r)
+            #     nouvel_y_r = modulo_y_r
+
+
+            # print(nouvel_x_r)
+
+            # Sélectionnez un indice aléatoire parmi les indices adjacents
+            #nouvel_x_r, nouvel_y_r = random.choice(indices_adjacents_requins)
+            
+        
+        # if 0 <= nouvel_x_r < nb_lignes and 0 <= nouvel_y_r < nb_colonnes and grille[nouvel_x_r][nouvel_y_r] == "🐠":
+        #     grille[requin.x][requin.y] = "💧"  # Remplacez l'emplacement actuel du requin par de l'eau
+        #     requin.x, requin.y = poisson.x, poisson.y
+        #     liste_de_poissons.pop()
+        #     grille[requin.x][requin.y] = "🦈"  # Remplacez l'emplacement actuel du poisson par de le requin
+
+        if 0 <= nouvel_x_r < nb_lignes and 0 <= nouvel_y_r < nb_colonnes and grille[nouvel_x_r][nouvel_y_r] == "💧":
                 # Déplacez le requin
                 grille[requin.x][requin.y] = "💧"  # Remplacez l'emplacement actuel du requin par de l'eau
                 requin.x, requin.y = nouvel_x_r, nouvel_y_r  # Mettez à jour les indices du requin
                 grille[requin.x][requin.y] ="🦈"  # Mettez à jour la grille avec le nouveau emplacement du poisson  
-            
-            if 0 <= nouvel_x_r < nb_lignes and 0 <= nouvel_y_r < nb_colonnes and grille[nouvel_x_r][nouvel_y_r] == "🐠":
-                grille[requin.x][requin.y] = "💧"  # Remplacez l'emplacement actuel du requin par de l'eau
-                requin.x, requin.y = poisson.x, poisson.y
-                grille[requin.x][requin.y] = "🦈"  # Remplacez l'emplacement actuel du poisson par de le requin
         
         
         
@@ -110,9 +206,6 @@ liste_de_requins = []
 for _ in range(nombre_de_requins):
     requin = Requin(random.randint(0, nb_lignes - 1), random.randint(0, nb_colonnes - 1))
     liste_de_requins.append(requin)
-    
-    
-    
 
 
 
@@ -149,7 +242,7 @@ while True:
     liste_de_poissons.extend(nouveaux_poissons)
     liste_de_requins.extend(nouveaux_requins)
     
-    Poisson.deplacements(poisson)
+    poisson.deplacements()
     
     for requin in liste_de_requins:
         requin.deplacements_requins() 
