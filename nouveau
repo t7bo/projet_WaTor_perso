@@ -1,0 +1,10 @@
+import random
+import time
+import copy
+
+# Dimensions de la grille
+nb_lignes = 8
+nb_colonnes = 20
+
+# Initialisation de la grille
+grille = [["💧" for _ in range(nb_colonnes)] for _ in range(nb_lignes)]

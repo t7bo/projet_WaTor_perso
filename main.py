@@ -17,6 +17,40 @@ class Animaux:
     def __init__(self, x, y):
         self.x = x
         self.y = y
+
+    # rajouter "nb_poissons", "nb_requins", "temps de reproduction pour poissons et requins, energie..." avec des self.
+
+    # def afficher le monde(self, sleep_time=1):
+        
+        # grille_copy = copy.deepcopy(self.grille)
+
+        #     for y in range(self.hauteur):
+        #         for x in range(self.largeur):
+        #             if grille[y][x].__class__ is Poisson:
+        #                 grille[y][x] = "poisson emoji"
+
+    # def peupler le monde
+        # lister les coordonnées possibles
+
+        # coordonnes = []
+        # for y in range (self.hauteur):
+        # for x in range (self.largeur)
+             # coordonnes.append((y, x))
+
+    # coordonnes_requins : random.sample(coordonnées, self.nb, self.nb_poissons)
+    
+        #for coordonnes_poisson in coordonnes_poissons:
+            #coordonnes.remove(coordonnes_poisson)
+
+        # for y, x in coordonnes_poissons:
+        # print(x,y)
+        # poisson = Poisson(coordonnees=(y,x), temps_de_reproduction=())
+
+        #déplacements requins en 1er et ensuite les poissons
+        # deux déplacements différents, pas en mm temps
+        # donc deux chronons différents?
+
+        # tirer une séquence de l'aimant , séquences différentes de coordonnées (aucune coordonnée identique avec sample)
         
 
 class Poisson(Animaux):
@@ -29,6 +63,77 @@ class Poisson(Animaux):
         return self.fish
     
 
+    # ajouter chronon_reproduction
+
+    # def cases_vides_adjacentes(self, Animaux)         PAS DE DIAGONALES, juste haut, bas, gauche, droite
+
+        #haut = (self.y+1) % Animaux.hauteur
+        #bas = (self.y-1) % Animaux.hauteur
+        #droite = (self.x+1) % Animaux.largeur
+        #gauche = (self.y-1) % Animayx.largeur
+
+        
+        #refaire 3 fois avec les modulos pour gérer les bords de la grille
+    
+
+
+
+
+    # def cases_poissons_adjacentes (pour classe Requin)
+    #     cases_poissons = []
+    #     haut = (self.y-1)% monde.hauteur
+    #     bas = (self.y+1)% monde.hauteur
+    #     gauche (self.x-1)% monde.largeur
+    #     droite = (self.x+1) % monde.largeur
+    
+    #     if monde.grille[haut][self.x].__class__ is Poisson:
+        # or if monde.grille[haut][self.x] == 0: #0 veut dire case vide, donc nous on remplace 0 par la goutte d'eau
+        #     liste_de_coordonnes_possibles.append((haut, self.x))
+        
+        # if monde.grille[self.y][gauche] == 0:
+        
+    
+
+    # def se_deplacer(self, animaux, actions_possibles:list, *args, **kwargs)
+        #energie = kwargs.get("energie", None)          #pour les requins uniquement mais dans la classe poisson
+
+        # if not len(actions_possibles):            (si pas de coordonnées adjacentes dispo, si liste de coordonnées vides, alors arrête fonction, ne fais rien,  alors return rien, il reste sur placr)
+        #     return
+        # else:
+        #     y, x = random.choice(actions_possibles)
+
+
+        # liste de coordonnes possibles.append(self.y, gauche) ?????????????
+
+        #retuern liste_de_coordonnes_possibles
+
+
+        # if self.chronon_reproduction > ...:
+            # if self.__class__ is Poisson:
+                #self.se_reproduite(monde=monde, animal=Poisson(coordonnes=(self.y, self.x), chrnonon_reproduction=animaux.chronon_reproduction), y_target=y, x_target=x)
+
+        #return super().se_deplacer ....
+
+
+
+
+    #def se reproduire(self, animal, y_target: int, x_target: int)
+
+        # nouvelle_entite = animal
+
+        # Animaux.grille(self,y][self.x] ) nouvelle entite
+
+        # if animal.__class__ is Poisson:
+        #     monde.liste_poissons.append(nouvelle_entite)
+        # else: 
+        #     monde.liste_requins.append(nouvele_entite)
+
+
+        # monde.grille[y_target][x_target] = self       (self = un poisson parce qu'on est dans la classe poisson)
+        # self.y = y_target
+        # self.x = x_target
+
+        # self.chronon_reproduction = 0
          
     def deplacements(self):
         
@@ -193,7 +298,18 @@ class Requin(Poisson):
                 grille[requin.x][requin.y] = "💧"  # Remplacez l'emplacement actuel du requin par de l'eau
                 requin.x, requin.y = nouvel_x_r, nouvel_y_r  # Mettez à jour les indices du requin
                 grille[requin.x][requin.y] ="🦈"  # Mettez à jour la grille avec le nouveau emplacement du poisson  
+
+
+
+        # if monde.grille[y][x].__class__ is Poisson and self.__class__ is Requin:
+        #     monde.liste_de_poissons.remove(monde.grille[y_target][x_target])
         
+        # self.y = y_target
+        # self.x = x_target
+        # monde.grille[y_target][x_target] = self
+        
+
+
         
         
 #Demandez à l'utilisateur combien de poissons il souhaite créer
