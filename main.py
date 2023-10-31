@@ -1,173 +1,212 @@
 import random
 import time
-import copy
-
-# Dimensions de la grille
-nb_lignes = 8
-nb_colonnes = 20
-
-# Initialisation de la grille
-grille = [["💧" for _ in range(nb_colonnes)] for _ in range(nb_lignes)]
 
 
+class Monde:
 
-# Initialisation du poisson à un emplacement aléatoire
+    def __init__(self, largeur, hauteur):
+        self.largeur = largeur
+        self.hauteur = hauteur
 
-class Animaux:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-        
 
-class Poisson(Animaux):
-    
-    def __init__(self, x, y, fish="🐠"):
-        super().__init__(x, y)  # Appelez le constructeur de la classe parente avec les arguments x et y
+class Poisson(Monde):
+
+    def __init__(self, monde, fish="🐠"):
+        self.monde = monde
+        self.x = random.randint(0, monde.largeur - 1) % monde.largeur
+        self.y = random.randint(0, monde.hauteur - 1) % monde.hauteur
+
         self.fish = fish
 
-    def __str__(self):
-        return self.fish
-    
-         
-    def deplacements(self):
-        
-        global grille
-        
-        for poisson in liste_de_poissons:
-        
-            # Liste des indices adjacents valides pour le poisson
-            indices_adjacents = [(poisson.x-1, poisson.y), (poisson.x+1, poisson.y),
-                                (poisson.x, poisson.y-1), (poisson.x, poisson.y+1)]
-            
-            # Sélectionnez un indice aléatoire parmi les indices adjacents
+    def deplacements_poissons(self, grille):
+
+        indices_adjacents = []
+
+        haut = (self.y - 1) % self.monde.hauteur
+        bas = (self.y + 1) % self.monde.hauteur
+        gauche = (self.x - 1) % self.monde.largeur
+        droite = (self.x + 1) % self.monde.largeur
+
+        directions = [(self.x, haut), (self.x, bas),
+                      (gauche, self.y), (droite, self.y)]
+
+        indices_adjacents = []
+
+        for x, y in directions:
+            # Calcul des nouvelles coordonnées avec bord connecté
+            nouvel_x = x % self.monde.largeur
+            nouvel_y = y % self.monde.hauteur
+
+            # Vérification de la grille avec les nouvelles coordonnées
+            if grille[nouvel_y][nouvel_x] == "💧":
+                indices_adjacents.append((nouvel_x, nouvel_y))
+
+        if indices_adjacents:
             nouvel_x, nouvel_y = random.choice(indices_adjacents)
-        
-            # Si le nouvel emplacement est valide dans la grille
-            if 0 <= nouvel_x < nb_lignes and 0 <= nouvel_y < nb_colonnes and grille[nouvel_x][nouvel_y] == "💧":
-                # Déplacez le poisson
-                grille[poisson.x][poisson.y] = "💧"  # Remplacez l'emplacement actuel du poisson par de l'eau
-                poisson.x, poisson.y = nouvel_x, nouvel_y  # Mettez à jour les indices du poisson
-                grille[poisson.x][poisson.y] = "🐠"  # Mettez à jour la grille avec le nouveau emplacement du poisson
-                    
+            grille[self.y][self.x] = "💧"
+            self.x, self.y = nouvel_x, nouvel_y
+            grille[self.y][self.x] = self.fish
 
-#Demandez à l'utilisateur combien de poissons il souhaite créer
-nombre_de_poissons = int(input("Combien de poissons voulez-vous créer ? "))
-
-# Créez une liste pour stocker les poissons
-liste_de_poissons = []
-
-# Créez les poissons et ajoutez-les à la liste
-for _ in range(nombre_de_poissons):
-    poisson = Poisson(random.randint(0, nb_lignes - 1), random.randint(0, nb_colonnes - 1))
-    liste_de_poissons.append(poisson)
-
-
+        return grille
 
 
 class Requin(Poisson):
-    def __init__(self, x, y, shark="🦈"):
-        super().__init__(x, y)  # Appelez le constructeur de la classe parente avec les arguments x et y
-        self.shark = shark
-        
-    def __str__(self):
-        return self.shark
-    
 
-    def deplacements_requins(self):
-        
-        global grille
-        
-        for requin in liste_de_requins:
-        
-            # Liste des indices adjacents valides pour le requin
-            indices_adjacents_requins = [(requin.x-1, requin.y), (requin.x+1, requin.y),
-                                (requin.x, requin.y-1), (requin.x, requin.y+1)]
-            
-            # Sélectionnez un indice aléatoire parmi les indices adjacents
-            nouvel_x_r, nouvel_y_r = random.choice(indices_adjacents_requins)
-            
-            # Si le nouvel emplacement est valide dans la grille
-            if 0 <= nouvel_x_r < nb_lignes and 0 <= nouvel_y_r < nb_colonnes and grille[nouvel_x_r][nouvel_y_r] == "💧":
-                # Déplacez le requin
-                grille[requin.x][requin.y] = "💧"  # Remplacez l'emplacement actuel du requin par de l'eau
-                requin.x, requin.y = nouvel_x_r, nouvel_y_r  # Mettez à jour les indices du requin
-                grille[requin.x][requin.y] ="🦈"  # Mettez à jour la grille avec le nouveau emplacement du poisson  
-            
-            if 0 <= nouvel_x_r < nb_lignes and 0 <= nouvel_y_r < nb_colonnes and grille[nouvel_x_r][nouvel_y_r] == "🐠":
-                grille[requin.x][requin.y] = "💧"  # Remplacez l'emplacement actuel du requin par de l'eau
-                requin.x, requin.y = poisson.x, poisson.y
-                grille[requin.x][requin.y] = "🦈"  # Remplacez l'emplacement actuel du poisson par de le requin
-        
-        
-        
-#Demandez à l'utilisateur combien de poissons il souhaite créer
+    def __init__(self, monde, shark="🦈"):
+        self.shark = shark
+        self.energie = 6
+        self.x = random.randint(0, monde.largeur - 1) % monde.largeur
+        self.y = random.randint(0, monde.hauteur - 1) % monde.hauteur
+        super().__init__(monde, shark)
+
+    def deplacements_requins(self, grille, poissons):
+
+        poissons_adjacents = []
+
+        distances = []
+
+        # Vérifier s'il y a un poisson dans les cases adjacentes au requin
+        for poisson in poissons:
+
+            if abs(self.x - poisson.x) <= 1 and abs(self.y - poisson.y) <= 1:
+                poissons_adjacents.append(poisson)
+
+            else:
+                distance = abs(self.x - poisson.x) + abs(self.y - poisson.y)
+                distances.append((distance, poisson))
+
+        if poissons_adjacents:
+            # Déplacer le requin vers le poisson adjacent s'il y en a un ( SEULEMENT DEPLACEMENT (pas d'alimentation))
+            poisson_adjacent = random.choice(poissons_adjacents)
+            grille[self.y][self.x] = "💧"
+            self.x, self.y = poisson_adjacent.x, poisson_adjacent.y
+            grille[self.y][self.x] = self.shark
+            poissons.remove(poisson_adjacent)
+            requin.energie += 1
+
+        for r in liste_de_requins:
+            if r.energie == 0:
+                liste_de_requins.remove(r)
+
+        else:  # Si pas de poissons dans les cases adjacentes, alors déplacement normal
+            indices_adjacents = []
+            haut = (self.y - 1) % self.monde.hauteur
+            bas = (self.y + 1) % self.monde.hauteur
+            gauche = (self.x - 1) % self.monde.largeur
+            droite = (self.x + 1) % self.monde.largeur
+
+            directions = [(self.x, haut), (self.x, bas),
+                          (gauche, self.y), (droite, self.y)]
+            indices_adjacents = []
+            for x, y in directions:
+                # Calcul des nouvelles coordonnées avec bord connecté
+                nouvel_x = x % self.monde.largeur
+                nouvel_y = y % self.monde.hauteur
+
+                # Vérification des nouvelles coordonnées pour rester dans les limites de la grille
+                if 0 <= nouvel_x < self.monde.largeur and 0 <= nouvel_y < self.monde.hauteur:
+                    # Vérification de la grille avec les nouvelles coordonnées
+                    if grille[nouvel_y][nouvel_x] == "💧":
+                        indices_adjacents.append((nouvel_x, nouvel_y))
+
+            if indices_adjacents:
+                nouvel_x, nouvel_y = random.choice(indices_adjacents)
+                grille[self.y][self.x] = "💧"
+                self.x, self.y = nouvel_x, nouvel_y
+                grille[self.y][self.x] = self.shark
+
+        return grille
+
+
+# Créez une instance de Monde
+monde = Monde(20, 10)  # Largeur et hauteur de votre monde
+
+# Initialisation de la grille
+grille = [["💧" for _ in range(monde.largeur)] for _ in range(monde.hauteur)]
+
+# Demandez à l'utilisateur combien de poissons et de requins créer
+nombre_de_poissons = int(input("Combien de poissons voulez-vous créer ? "))
 nombre_de_requins = int(input("Combien de requins voulez-vous créer ? "))
 
-# Créez une liste pour stocker les poissons
-liste_de_requins = []
-
-# Créez les poissons et ajoutez-les à la liste
-for _ in range(nombre_de_requins):
-    requin = Requin(random.randint(0, nb_lignes - 1), random.randint(0, nb_colonnes - 1))
-    liste_de_requins.append(requin)
-    
-    
-    
-
-
-
+# Créez les poissons et les requins
+liste_de_poissons = [Poisson(monde) for _ in range(nombre_de_poissons)]
+liste_de_requins = [Requin(monde) for _ in range(nombre_de_requins)]
 
 chronon = 0
-chronon_reproduction = 0
+chronon_reproduction_poisson = 0
+chronon_reproduction_requin = 0
+energie = 0
 
 
-# Affichez la grille initiale une fois
-for row in grille:
-    print("".join(row))
-
-
-# Animation du déplacement du poisson
 while True:
 
-
-    #REPRODUCTION ET DEPLACEMENTS   
-
-    # Nouvelle liste pour stocker les nouveaux poissons
-    nouveaux_poissons = []
-    nouveaux_requins = []
-
+    # Reproduction des poissons
     for poisson in liste_de_poissons:
-        for requin in liste_de_requins:
-            if chronon_reproduction == 3:
-                nouveau_poisson = Poisson(poisson.x, poisson.y)
-                nouveau_requin = Requin(requin.x, requin.y)
-                nouveaux_poissons.append(nouveau_poisson)
-                nouveaux_requins.append(nouveau_requin)
-                chronon_reproduction = 0
-            
-    # Ajoutez les nouveaux poissons à la liste existante
-    liste_de_poissons.extend(nouveaux_poissons)
-    liste_de_requins.extend(nouveaux_requins)
-    
-    Poisson.deplacements(poisson)
-    
-    for requin in liste_de_requins:
-        requin.deplacements_requins() 
-        
-    
 
-    # Déplacez le curseur vers le haut gauche de la console
-    print("\033[H", end="")
-    
+        # Reproduction des poissons
+        if chronon_reproduction_poisson == 2:
+
+            nouveaux_poissons = []
+
+            for poisson in liste_de_poissons:
+
+                nouveau_poisson = Poisson(monde)
+                nouveau_poisson.x = poisson.x
+                nouveau_poisson.y = poisson.y
+                nouveaux_poissons.append(nouveau_poisson)
+
+            # Ajouter les nouveaux poissons à la liste des poissons existants
+            liste_de_poissons.extend(nouveaux_poissons)
+            chronon_reproduction_poisson = 0
+
+        # Déplacements des poissons
+        grille = poisson.deplacements_poissons(grille)
+
+    for requin in liste_de_requins:
+
+        # Reproduction des requins
+        if chronon_reproduction_requin == 5:
+
+            nouveaux_requins = []
+
+            for requin in liste_de_requins:
+
+                nouveau_requin = Requin(monde)
+                nouveau_requin.x = requin.x
+                nouveau_requin.y = requin.y
+                nouveaux_requins.append(nouveau_requin)
+                energie += 2
+                chronon_reproduction_requin = 0
+
+            # Ajouter les nouveaux requins à la liste des requins existants
+            liste_de_requins.extend(nouveaux_requins)
+
+        if requin.energie == 0:  # NE FONCTIONNE PAS
+            grille[requin.y][requin.x] = "💧"
+            liste_de_requins.remove(requin)
+
+        # Déplacements des requins
+
+        grille = requin.deplacements_requins(grille, liste_de_poissons)
+
     chronon += 1
-    chronon_reproduction +=1
-    
-    print(f"{chronon_reproduction}/3 chronons passés pour la reproduction")
-    print(f"Total poissons : {len(liste_de_poissons)}, Total de requins : {len(liste_de_requins)}")
-    
+    chronon_reproduction_requin += 1
+    chronon_reproduction_poisson += 1
+
+    # print("\033[H", end="")
+    print("\033c", end="")
+
     # Affichez la grille mise à jour
     for row in grille:
         print("".join(row))
-    
+
+    print(f"Total poissons : {len(liste_de_poissons)}")
+    print(f"Total requins : {len(liste_de_requins)}")
+    print(f"Total de chronons passés : {chronon}")
+    print(
+        f"Reproduction des poissons ({chronon_reproduction_poisson} chronons / 2) ")
+    print(
+        f"Reproduction des requins ({chronon_reproduction_poisson} chronons / 5) ")
+
     # Mettez en pause le programme pendant 1 seconde pour créer l'effet d'animation
     time.sleep(1)
