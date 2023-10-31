@@ -1,20 +1,7 @@
-import random
 import time
+from monde import *
 from poisson import Poisson
 from requin import Requin
-
-class Monde:
-
-    def __init__(self, largeur, hauteur):
-        self.largeur = largeur
-        self.hauteur = hauteur
-
-
-# Créez une instance de Monde
-monde = Monde(20, 10)  # Largeur et hauteur de votre monde
-
-# Initialisation de la grille
-grille = [["💧" for _ in range(monde.largeur)] for _ in range(monde.hauteur)]
 
 # Demandez à l'utilisateur combien de poissons et de requins créer
 nombre_de_poissons = int(input("Combien de poissons voulez-vous créer ? "))
@@ -101,4 +88,3 @@ while True:
 
     # Mettez en pause le programme pendant 1 seconde pour créer l'effet d'animation
     time.sleep(1)
-    
