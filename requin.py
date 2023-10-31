@@ -1,4 +1,3 @@
-from monde import Monde
 from poisson import Poisson
 import random
 
@@ -69,4 +68,3 @@ class Requin(Poisson):
                 grille[self.y][self.x] = self.shark
 
         return grille
-    
