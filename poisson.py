@@ -40,4 +40,3 @@ class Poisson(Monde):
             grille[self.y][self.x] = self.fish
 
         return grille
-    
