@@ -69,3 +69,4 @@ class Requin(Poisson):
                 grille[self.y][self.x] = self.shark
 
         return grille
+    
