@@ -101,3 +101,4 @@ while True:
 
     # Mettez en pause le programme pendant 1 seconde pour créer l'effet d'animation
     time.sleep(1)
+    
