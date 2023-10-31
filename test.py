@@ -1,7 +1,6 @@
 import random
 import time
 
-
 class Monde:
 
     def __init__(self, largeur, hauteur):
@@ -209,3 +208,4 @@ while True:
 
     # Mettez en pause le programme pendant 1 seconde pour créer l'effet d'animation
     time.sleep(1)
+    
