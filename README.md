@@ -11,15 +11,16 @@ Le monde est représenté par une grille 2D où chaque cellule peut être soit u
 ### Les Poissons
 
 - Les poissons se déplacent librement dans l'eau.
-- Ils se reproduisent tous les 3 chronons et donnent naissance à de nouveaux poissons.
+- Ils se reproduisent tous les 2 chronons et donnent naissance à de nouveaux poissons.
 - Les poissons se déplacent d'une cellule dans le monde chaque chronon.
 
 ### Les Requins
 
 - Les requins se déplacent librement dans l'eau.
-- Ils se reproduisent tous les 5 chronons et donnent naissance à de nouveaux requins.
+- Ils se reproduisent tous les 4 chronons et donnent naissance à de nouveaux requins.
 - Les requins chassent les poissons pour se nourrir.
 - Si un requin ne se nourrit pas pendant un certain nombre de chronons, il meurt.
+- Energie vitale maximale d'un requin : 5 (chronons sans manger)
 
 ### Limites du Monde
 
