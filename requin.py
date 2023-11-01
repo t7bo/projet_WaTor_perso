@@ -1,15 +1,29 @@
 from poisson import Poisson
 import random
 
+# Class requin est la classe enfant de Poisson
 class Requin(Poisson):
 
     def __init__(self, monde, shark="🦈"):
         self.shark = shark
-        self.energie = 6
+        self.energie = 5
         self.x = random.randint(0, monde.largeur - 1) % monde.largeur
         self.y = random.randint(0, monde.hauteur - 1) % monde.hauteur
         super().__init__(monde, shark)
         
+        
+    def energie_vitale(self, grille):
+        
+        if len(liste_de_requins) == 0:
+            pass
+        else:
+            # Contrôle de l'énergie du requin (non fonctionnel)                
+            if self.energie == 0: #mort du requin
+                grille[self.y][self.x] = "💧"
+                grille = liste_de_requins.remove(requin)
+            else:
+                self.energie -= 1 
+            
 
     def deplacements_requins(self, grille, poissons):
 
@@ -36,12 +50,8 @@ class Requin(Poisson):
             poissons.remove(poisson_adjacent)
             requin.energie += 1
 
-        for r in liste_de_requins:
-            if r.energie == 0:
-                liste_de_requins.remove(r)
-
         else:  # Si pas de poissons dans les cases adjacentes, alors déplacement normal
-            indices_adjacents = []
+            
             haut = (self.y - 1) % self.monde.hauteur
             bas = (self.y + 1) % self.monde.hauteur
             gauche = (self.x - 1) % self.monde.largeur
@@ -49,17 +59,16 @@ class Requin(Poisson):
 
             directions = [(self.x, haut), (self.x, bas),
                           (gauche, self.y), (droite, self.y)]
+            
             indices_adjacents = []
+            
+            # Calcul des nouvelles coordonnées avec bord connecté
             for x, y in directions:
-                # Calcul des nouvelles coordonnées avec bord connecté
                 nouvel_x = x % self.monde.largeur
                 nouvel_y = y % self.monde.hauteur
 
-                # Vérification des nouvelles coordonnées pour rester dans les limites de la grille
-                if 0 <= nouvel_x < self.monde.largeur and 0 <= nouvel_y < self.monde.hauteur:
-                    # Vérification de la grille avec les nouvelles coordonnées
-                    if grille[nouvel_y][nouvel_x] == "💧":
-                        indices_adjacents.append((nouvel_x, nouvel_y))
+                if grille[nouvel_y][nouvel_x] == "💧":
+                    indices_adjacents.append((nouvel_x, nouvel_y))
 
             if indices_adjacents:
                 nouvel_x, nouvel_y = random.choice(indices_adjacents)
