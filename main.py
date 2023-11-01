@@ -3,22 +3,23 @@ from monde import *
 from poisson import Poisson
 from requin import Requin
 
-# Demandez à l'utilisateur combien de poissons et de requins créer
+# Demande à l'utilisateur combien de poissons et de requins il souhaite
 nombre_de_poissons = int(input("Combien de poissons voulez-vous créer ? "))
 nombre_de_requins = int(input("Combien de requins voulez-vous créer ? "))
 
-# Créez les poissons et les requins
+# Création des poissons et des requins
 liste_de_poissons = [Poisson(monde) for _ in range(nombre_de_poissons)]
 liste_de_requins = [Requin(monde) for _ in range(nombre_de_requins)]
 
 chronon = 0
 chronon_reproduction_poisson = 0
 chronon_reproduction_requin = 0
-energie = 0
+energie = 5
+
 
 while True:
 
-    # Reproduction des poissons
+    # POISSONS
     for poisson in liste_de_poissons:
 
         # Reproduction des poissons
@@ -39,11 +40,13 @@ while True:
 
         # Déplacements des poissons
         grille = poisson.deplacements_poissons(grille)
+        
 
+    # REQUINS
     for requin in liste_de_requins:
-
+        
         # Reproduction des requins
-        if chronon_reproduction_requin == 5:
+        if chronon_reproduction_requin == 4:
 
             nouveaux_requins = []
 
@@ -56,17 +59,16 @@ while True:
                 energie += 2
                 chronon_reproduction_requin = 0
 
-            # Ajouter les nouveaux requins à la liste des requins existants
+            # Ajout des nouveaux requins à la liste des requins existants
             liste_de_requins.extend(nouveaux_requins)
-
-        if requin.energie == 0:  # NE FONCTIONNE PAS
-            grille[requin.y][requin.x] = "💧"
-            liste_de_requins.remove(requin)
-
+            
         # Déplacements des requins
-
         grille = requin.deplacements_requins(grille, liste_de_poissons)
+        
+        # Contrôle et/ou Mort des requins
+        requin.energie_vitale(grille)
 
+                    
     chronon += 1
     chronon_reproduction_requin += 1
     chronon_reproduction_poisson += 1
@@ -74,17 +76,15 @@ while True:
     # print("\033[H", end="")
     print("\033c", end="")
 
-    # Affichez la grille mise à jour
+    # Affichage de la grille mise à jour
     for row in grille:
         print("".join(row))
 
     print(f"Total poissons : {len(liste_de_poissons)}")
     print(f"Total requins : {len(liste_de_requins)}")
     print(f"Total de chronons passés : {chronon}")
-    print(
-        f"Reproduction des poissons ({chronon_reproduction_poisson} chronons / 2) ")
-    print(
-        f"Reproduction des requins ({chronon_reproduction_poisson} chronons / 5) ")
+    print(f"Reproduction des poissons ({chronon_reproduction_poisson} chronons / 2) ")
+    print(f"Reproduction des requins ({chronon_reproduction_poisson} chronons / 5) ")
 
-    # Mettez en pause le programme pendant 1 seconde pour créer l'effet d'animation
+    # Mise en pause du programme pendant 1 seconde pour créer l'effet d'animation
     time.sleep(1)
