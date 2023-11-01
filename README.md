@@ -1,4 +1,4 @@
-# Projet Wa-Tor Personnalisé
+# Projet Wa-Tor
 
 Ce projet est une implémentation personnalisée du simulateur Wa-Tor, un modèle de simulation de l'écosystème marin. Dans cette version, vous pouvez observer l'interaction entre les poissons et les requins dans un monde aquatique simulé.
 
